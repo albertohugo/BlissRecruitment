@@ -3,6 +3,7 @@
           package="hugo.alberto.blissrecruitment">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -25,6 +26,17 @@
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- adb shell am start -W -a android.intent.action.VIEW -d "blissrecruitment://questions?question_id=ID" hugo.alberto.blissrecruitment -->
+                <!-- adb shell am start -W -a android.intent.action.VIEW -d "blissrecruitment://questions?question_filter=FILTER" hugo.alberto.blissrecruitment -->
+                <data android:scheme="blissrecruitment"
+                      android:host="questions" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -8,4 +8,6 @@
     <dimen name="activity_margin_10">10dp</dimen>
     <dimen name="activity_margin_5">5dp</dimen>
     <dimen name="font_title">22dp</dimen>
+    <dimen name="font_title_detail">18dp</dimen>
+    <dimen name="font_subtitle_detail">16dp</dimen>
 </resources>

@@ -1,15 +1,18 @@
 <resources>
     <string name="app_name">BlissRecruitment</string>
     <string name="action_settings">Settings</string>
-
     <string name="loading">Loading...</string>
-
     <string name="retry_action">Retry Action</string>
     <string name="search">Search</string>
     <string name="questions">Questions List</string>
     <string name="publish_at">Published at:</string>
     <string name="clear">Clear</string>
-
+    <string name="question">Question Detail</string>
     <string name="loading_completed">Loading data completed</string>
+    <string name="email">Email</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="shared">Shared</string>
+    <string name="no_connectivity">No Connectivity</string>
 
 </resources>
