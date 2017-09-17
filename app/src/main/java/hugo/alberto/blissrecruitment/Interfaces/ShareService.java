@@ -1,12 +1,10 @@
 package hugo.alberto.blissrecruitment.Interfaces;
 
 
-import hugo.alberto.blissrecruitment.Models.Health;
 import hugo.alberto.blissrecruitment.Models.Post;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**

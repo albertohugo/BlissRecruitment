@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,16 +21,13 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import hugo.alberto.blissrecruitment.Activities.MainActivity;
 import hugo.alberto.blissrecruitment.Adapters.QuestionListAdapter;
 import hugo.alberto.blissrecruitment.Interfaces.ListAllQuestionsService;
 import hugo.alberto.blissrecruitment.Interfaces.OnLoadMoreListener;
 import hugo.alberto.blissrecruitment.Interfaces.ShareService;
-import hugo.alberto.blissrecruitment.Models.Choices;
 import hugo.alberto.blissrecruitment.Models.Post;
 import hugo.alberto.blissrecruitment.Models.Question;
 import hugo.alberto.blissrecruitment.R;
@@ -42,7 +38,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Created by alberto.hugo on 16-09-2017.
+ * Question List Screen
  */
 
 public class QuestionsListFragment extends Fragment {
@@ -50,6 +47,7 @@ public class QuestionsListFragment extends Fragment {
     public static final String TAG = "QuestionsListFragment";
     private RecyclerView recycle;
     private List<Question> listQ;
+    //Parameter that define number of load registers by refresh
     private int visibleThreshold = 10;
     public TextInputEditText edtt_search;
     private QuestionListAdapter mAdapter = null;
@@ -79,76 +77,19 @@ public class QuestionsListFragment extends Fragment {
             }
         });
         
+        // Receiving arguments from Main activity
         Bundle bundle = this.getArguments();
         if (getArguments() != null) {
             parameter =  bundle.getString("Parameter");
             value =  bundle.getString("Value");
         }
         
+        
+        //If question filter exist set filter edit text
         if(parameter.equals("QUESTION_FILTER")){
             edtt_search.setText(value);
         }
         
-        
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final EditText txtEmail = new EditText(getActivity());
-                final AlertDialog dialog =
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle(getString(R.string.email))
-                                .setMessage("")
-                                .setView(txtEmail)
-                                .setPositiveButton(getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        try {
-                                            String email= txtEmail.getText().toString();
-                                            String url = "blissrecruitment://questions?question_filter=" + edtt_search.getText().toString();
-                                            
-                                            final Retrofit retrofit = new Retrofit.Builder()
-                                                    .addConverterFactory(GsonConverterFactory.create()).baseUrl(ShareService.BASE_URL)
-                                                    .build();
-    
-                                            ShareService service = retrofit.create(ShareService.class);
-    
-                                            Call<Post> call = service.loadDetail(email, url);
-                                            call.enqueue(new Callback<Post>() {
-                                                @Override
-                                                public void onResponse(Call<Post> call, Response<Post> response) {
-                                                    Log.i(TAG, "AH DEBUG " + response.headers());
-                                                    Log.i(TAG, "AH DEBUG " + response.code());
-                                                    Log.i(TAG, "AH DEBUG " + response.body());
-                                                    Log.i(TAG, "AH DEBUG " + response.message());
-                                                    Log.i(TAG, "AH DEBUG  "+ response.raw().toString());
-                                                    if(response.code()==200){
-                                                        Toast.makeText(getActivity(), getString(R.string.shared), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                   
-                                                }
-        
-                                                @Override
-                                                public void onFailure(Call<Post> call, Throwable t) {
-                                                    Log.i(TAG, "AH DEBUG " + "data not found");
-                                                }
-                                            });
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                })
-                                .setNegativeButton(getActivity().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                    }
-                                })
-                                .create();
-    
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                dialog.show();
-                
-            }
-        
-        });
         
         Retrofit retrofitL = new Retrofit.Builder()
                 .baseUrl(ListAllQuestionsService.BASE_URL)
@@ -165,14 +106,13 @@ public class QuestionsListFragment extends Fragment {
                     Log.i(TAG, "AH DEBUG Error" + response.code());
                 } else {
                     Log.i(TAG, "AH DEBUG "+ String.valueOf(response.body().get(1).question));
-    
-                 
                     
+                    //Add questions list to listQ
                     for (int i = 0; i <visibleThreshold  ; i++) {
                         if(parameter.equals("QUESTION_ID")){
                             if (!value.equals("")) {
                                 if (response.body().get(i).id.equals(value)) {
-                                    sendDetails(response.body().get(i), getActivity());
+                                    openDetail(response.body().get(i), getActivity());
                                     return;
                                 }
                             }
@@ -187,6 +127,7 @@ public class QuestionsListFragment extends Fragment {
                 mAdapter = new QuestionListAdapter(listQ, recycle, getActivity());
                 recycle.setAdapter(mAdapter);
             
+                //Filter control
                 edtt_search.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
@@ -219,11 +160,13 @@ public class QuestionsListFragment extends Fragment {
                     public void afterTextChanged(Editable arg0) {}
                 });
     
-    
+                //Set filter to edit text (From intent getDataString Main Activity)
                 if (parameter.equals("QUESTION_FILTER")){
                     edtt_search.setText(value);
                 }
             
+                
+                // Refresh list when swipe up
                 mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                     @Override
                     public void onLoadMore() {
@@ -249,8 +192,6 @@ public class QuestionsListFragment extends Fragment {
                                     mAdapter.setLoaded();
                                 }
                             }, 5000);
-                        } else {
-                            //Snackbar.make(getView(), getString(R.string.loading_completed), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         }
                     }
                 });
@@ -263,21 +204,72 @@ public class QuestionsListFragment extends Fragment {
             }
         });
     
+    
+        //Event click share button
+        FloatingActionButton shareButton = rootView.findViewById(R.id.fab);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText txtEmail = new EditText(getActivity());
+                final AlertDialog dialog =
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(getString(R.string.email))
+                                .setMessage("")
+                                .setView(txtEmail)
+                                .setPositiveButton(getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        try {
+                                            String email= txtEmail.getText().toString();
+                                            String url = "blissrecruitment://questions?question_filter=" + edtt_search.getText().toString();
+                                        
+                                            final Retrofit retrofit = new Retrofit.Builder()
+                                                    .addConverterFactory(GsonConverterFactory.create()).baseUrl(ShareService.BASE_URL)
+                                                    .build();
+                                        
+                                            ShareService service = retrofit.create(ShareService.class);
+                                        
+                                            Call<Post> call = service.loadDetail(email, url);
+                                            call.enqueue(new Callback<Post>() {
+                                                @Override
+                                                public void onResponse(Call<Post> call, Response<Post> response) {
+                                                    if(response.code()==200){
+                                                        Toast.makeText(getActivity(), getString(R.string.shared), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            
+                                                @Override
+                                                public void onFailure(Call<Post> call, Throwable t) {
+                                                    Log.i(TAG, "AH DEBUG " + "data not found");
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(getActivity().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                    }
+                                })
+                                .create();
+            
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                dialog.show();
+            
+            }
+        
+        });
         
         return rootView;
-        
     }
         
-    public static void sendDetails(Question question, Context ctx) {
+    //Open details and pass question object
+    public static void openDetail(Question question, Context ctx) {
         FragmentManager fragmentManager = ((MainActivity) ctx).getSupportFragmentManager();
         Fragment fragment = NoConnectivityFragment.instantiate(ctx, DetailFragment.class.getName());
         Bundle bundle = new Bundle();
         bundle.putParcelable("Question", question);
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction().add(R.id.fragment, fragment, DetailFragment.TAG).addToBackStack(null).commit();
-        
     }
-    
-    
-   
 }

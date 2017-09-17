@@ -1,17 +1,13 @@
 package hugo.alberto.blissrecruitment.Fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
-
-import hugo.alberto.blissrecruitment.Activities.MainActivity;
 import hugo.alberto.blissrecruitment.Interfaces.ShareService;
 import hugo.alberto.blissrecruitment.Interfaces.UpdateQuestionService;
 import hugo.alberto.blissrecruitment.Misc.Utils;
@@ -42,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alberto.hugo on 16-09-2017.
+ * Detail Screen
  */
 
 public class DetailFragment extends Fragment {
@@ -62,6 +56,7 @@ public class DetailFragment extends Fragment {
         subtitle = rootView.findViewById(R.id.subtitle);
         img = rootView.findViewById(R.id.imageView);
         
+        // Receive Question object by bundle
         Bundle bundle = this.getArguments();
         if (getArguments() != null) {
             questionSelected =  bundle.getParcelable("Question");
@@ -70,8 +65,8 @@ public class DetailFragment extends Fragment {
         title.setText(questionSelected.id +". "+questionSelected.question);
         subtitle.setText(getString(R.string.publish_at) + " " + Utils.formateDate(questionSelected.published_at));
         Picasso.with(getActivity()).load(questionSelected.thumb_url).placeholder( R.drawable.progress_animation ).into(img);
-    
-    
+        
+        //Create radio group and fill qwith choices object
         RadioGroup rgp = new RadioGroup(getActivity());
     
         for (Choices choices : questionSelected.choices) {
@@ -84,22 +79,20 @@ public class DetailFragment extends Fragment {
             rgp.addView(rbn);
         }
     
+        //Event get radio button select
         rgp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 rbn = rootView.findViewById(selectedId);
-    
-                //Toast.makeText(getActivity(),rbn.getText(), Toast.LENGTH_SHORT).show();
-    
             }
         });
     
         LinearLayout linearChoices = rootView.findViewById(R.id.linearChoices);
         linearChoices.addView(rgp);
     
-        FloatingActionButton fab2 = rootView.findViewById(R.id.fab2);
-        fab2.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton shareButton = rootView.findViewById(R.id.fab2);
+        shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final EditText txtEmail = new EditText(getActivity());
@@ -156,8 +149,8 @@ public class DetailFragment extends Fragment {
         });
         
 
-    FloatingActionButton fab1 = rootView.findViewById(R.id.fab1);
-        fab1.setOnClickListener(new View.OnClickListener() {
+    FloatingActionButton sendButton = rootView.findViewById(R.id.fab1);
+        sendButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final Retrofit retrofit = new Retrofit.Builder()
@@ -193,10 +186,6 @@ public class DetailFragment extends Fragment {
         }
     });
         
-        return rootView;
+    return rootView;
 }
-    
-    
-   
-    
 }

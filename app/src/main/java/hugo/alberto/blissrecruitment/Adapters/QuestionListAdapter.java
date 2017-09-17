@@ -8,13 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
 import hugo.alberto.blissrecruitment.Fragments.QuestionsListFragment;
 import hugo.alberto.blissrecruitment.Interfaces.ItemClickListener;
 import hugo.alberto.blissrecruitment.Interfaces.OnLoadMoreListener;
@@ -22,6 +16,10 @@ import hugo.alberto.blissrecruitment.Misc.Utils;
 import hugo.alberto.blissrecruitment.Models.Question;
 import hugo.alberto.blissrecruitment.R;
 
+/**
+ * Created by alberto.hugo on 16-09-2017.
+ * RecyclerViewAdapter to Question list screen
+ */
 
 public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     
@@ -121,7 +119,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     if (isLongClick) {
                         //Toast.makeText(ctx, "#" + position + " - " + questions.get(position).id + " (Long click)", Toast.LENGTH_SHORT).show();
                     } else {
-                        QuestionsListFragment.sendDetails(questions.get(position), ctx);
+                        QuestionsListFragment.openDetail(questions.get(position), ctx);
                     }
                 }
             });

@@ -1,8 +1,6 @@
 package hugo.alberto.blissrecruitment.Interfaces;
 
 import java.util.List;
-
-
 import hugo.alberto.blissrecruitment.Models.Question;
 import retrofit2.Call;
 import retrofit2.http.GET;

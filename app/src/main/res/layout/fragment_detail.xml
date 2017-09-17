@@ -6,7 +6,6 @@
                 android:layout_height="match_parent"
 
                 tools:context="hugo.alberto.blissrecruitment.MainActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,8 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <RelativeLayout
                 android:paddingTop="@dimen/activity_margin_10"
                 android:layout_width="match_parent"
@@ -30,9 +27,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_weight="1"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,14 +36,12 @@
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:paddingLeft="10dp">
-
                     <TextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="@dimen/font_title_detail"/>
-
                     <TextView
                         android:id="@+id/subtitle"
                         android:layout_width="wrap_content"
@@ -63,14 +56,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorAccent"/>
-
             <LinearLayout
                 android:id="@+id/linearChoices"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton

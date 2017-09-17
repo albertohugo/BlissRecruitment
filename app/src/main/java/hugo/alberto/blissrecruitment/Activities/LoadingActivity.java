@@ -7,10 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import hugo.alberto.blissrecruitment.Interfaces.HealthService;
 import hugo.alberto.blissrecruitment.Models.Health;
 import hugo.alberto.blissrecruitment.R;
@@ -22,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alberto.hugo on 16-09-2017.
+ * Splach activity
+ * Sreen that check server health
  */
 
 public class LoadingActivity extends Activity {
@@ -77,8 +75,6 @@ public class LoadingActivity extends Activity {
                         buttonRetry.setText(String.valueOf(response.body().status));
                         linearReloading.setVisibility(View.VISIBLE);
                     }
-                
-                
                 }
             }
         

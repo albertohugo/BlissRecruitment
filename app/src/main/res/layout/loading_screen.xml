@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="hugo.alberto.blissrecruitment.Activities.LoadingActivity">
-
-
         <LinearLayout
             android:id="@+id/linear_loading"
             android:layout_width="match_parent"
@@ -28,8 +26,6 @@
                     android:text="@string/loading"/>
 
         </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/linear_reloading"
             android:layout_width="match_parent"
@@ -38,15 +34,11 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
-
                 <Button
                     android:id="@+id/button_retry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/button_margin"
                     android:drawableTop="@android:drawable/ic_popup_sync"/>
-
         </LinearLayout>
-
-
 </LinearLayout>
