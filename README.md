@@ -35,4 +35,4 @@ Run the blissrecruitment app from Android Studio
 
 **Open app with the detail screen URL from outside the app**
 
-	shell am start -W -a android.intent.action.VIEW -d "blissrecruitment://questions?question_id=ID" hugo.alberto.blissrecruitment 
+	adb shell am start -W -a android.intent.action.VIEW -d "blissrecruitment://questions?question_id=ID" hugo.alberto.blissrecruitment 
